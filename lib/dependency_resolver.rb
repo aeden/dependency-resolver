@@ -7,15 +7,16 @@ class DependencyResolver
   end
   def dependencies(name, version)
     fqdn = "#{version.reverse}.#{name}.#{root}"
-    results = []
+    dependencies = []
     resolver = Resolv::DNS.new
     resolver.each_resource(fqdn, Resolv::DNS::Resource::IN::ANY) do |res|
       if res.is_a?(Resolv::DNS::Resource::PTR)
-        parts = res.name.to_s.gsub(".#{root}", '').split('.').reverse
-        n = parts.shift
-        results << [n, parts.join(".")].join("-")
+        fqdn = res.name.to_s
+        parts = fqdn.gsub(".#{root}", '').split('.')
+        parts = parts.reverse
+        dependencies << "#{parts.shift}-#{parts.join(".")}"
       end
     end
-    results
+    dependencies.sort
   end
 end

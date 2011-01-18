@@ -7,6 +7,6 @@ describe DependencyResolver do
       'dependency-2.1.0',
       'another-0.9.9',
       'yet-another-3.4.0'
-    ])
+    ].sort)
   end
 end
