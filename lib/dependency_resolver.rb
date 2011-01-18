@@ -2,7 +2,7 @@ require 'resolv'
 
 class DependencyResolver
   attr_reader :root
-  def initialize(root="index.dnsimple.org")
+  def initialize(root)
     @root = root
   end
   def dependencies(name, version)

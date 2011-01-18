@@ -1,8 +1,9 @@
 require 'dependency_resolver'
 
 describe DependencyResolver do
+  let(:resolver) { DependencyResolver.new('index.dnsimple.org') }
   it "provides a direct dependency list" do
-    dependencies = DependencyResolver.new.dependencies('example', '1.0.0')
+    dependencies = resolver.dependencies('example', '1.0.0')
     dependencies.should eq([
       'dependency-2.1.0',
       'another-0.9.9',
