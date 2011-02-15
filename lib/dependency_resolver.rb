@@ -1,22 +1,36 @@
 require 'resolv'
+require 'gem_name'
 
 class DependencyResolver
   attr_reader :root
+
+  # The fully-qualified root name, such as index.rubygems.org
   def initialize(root)
     @root = root
   end
+
+  # Fill out dependencies. Returns a GemName instance
   def dependencies(name, version)
-    fqdn = "#{version.reverse}.#{name}.#{root}"
-    dependencies = []
-    resolver = Resolv::DNS.new
+    g = GemName.new(name, version)
+    _dependencies(g)
+    g
+  end
+
+  private
+  # Recursive dependency resolver
+  def _dependencies(g)
+    fqdn = "#{g.version.reverse}.#{g.name}.#{root}"
     resolver.each_resource(fqdn, Resolv::DNS::Resource::IN::ANY) do |res|
       if res.is_a?(Resolv::DNS::Resource::PTR)
-        fqdn = res.name.to_s
-        parts = fqdn.gsub(".#{root}", '').split('.')
-        parts = parts.reverse
-        dependencies << "#{parts.shift}-#{parts.join(".")}"
+        c = GemName.from_fqdn(res.name.to_s, root)
+        g << c
+        _dependencies(c)
       end
     end
-    dependencies.sort
   end
+
+  def resolver
+    Resolv::DNS.new(:nameserver => ['184.106.215.134'])
+  end
+
 end
