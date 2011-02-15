@@ -3,10 +3,12 @@ require 'gem_name'
 
 class DependencyResolver
   attr_reader :root
+  attr_accessor :resolver
 
   # The fully-qualified root name, such as index.rubygems.org
-  def initialize(root)
+  def initialize(root, resolver=Resolv::DNS.new)
     @root = root
+    @resolver = resolver
   end
 
   # Fill out dependencies. Returns a GemName instance
@@ -27,10 +29,6 @@ class DependencyResolver
         _dependencies(c)
       end
     end
-  end
-
-  def resolver
-    Resolv::DNS.new(:nameserver => ['184.106.215.134'])
   end
 
 end
