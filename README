@@ -1,5 +1,7 @@
 This library demonstrates how to handle gem dependency management using DNS.
 
+Implementation of the ideas here: https://gist.github.com/781782
+
 == Authors
 
 Anthony Eden <anthonyeden@gmail.com>
