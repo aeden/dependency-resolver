@@ -9,5 +9,8 @@ describe DependencyResolver do
       'dependency-2.1.0', 
       'yet-another-3.4.0'
     ])
+    the_gem['dependency-2.1.0'].children.map(&:fqn).sort.should eq([
+      'young-gem-0.0.3'
+    ])
   end
 end

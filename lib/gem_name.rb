@@ -21,7 +21,12 @@ class GemName
   end
 
   def [](name)
-    children.find { |child| child == name }
+    case name
+    when String
+      children.find { |child| child.fqn == name }
+    else
+      self[name.fqn]
+    end
   end
 
   def <<(child)
